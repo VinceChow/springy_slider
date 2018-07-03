@@ -112,6 +112,10 @@ class SpringySlider extends StatefulWidget {
 }
 
 class _SpringySliderState extends State<SpringySlider> {
+  final double paddingTop = 50.0;
+  final double paddingBottom = 50.0;
+  final double sliderPercent = 0.5;
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -119,8 +123,8 @@ class _SpringySliderState extends State<SpringySlider> {
         SliderMarks(
           markCount: widget.markCount,
           color: widget.positiveColor,
-          paddingTop: 50.0,
-          paddingBottom: 50.0,
+          paddingTop: paddingTop,
+          paddingBottom: paddingBottom,
         ),
         ClipPath(
           clipper: SliderClipper(),
@@ -132,12 +136,46 @@ class _SpringySliderState extends State<SpringySlider> {
               SliderMarks(
                 markCount: widget.markCount,
                 color: widget.negativeColor,
-                paddingTop: 50.0,
-                paddingBottom: 50.0,
+                paddingTop: paddingTop,
+                paddingBottom: paddingBottom,
               ),
             ],
           ),
-        )
+        ),
+        Padding(
+          padding: EdgeInsets.only(
+            top: paddingTop,
+            bottom: paddingBottom,
+          ),
+          child: LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              final height = constraints.maxHeight;
+              final sliderY = height * (1.0 - sliderPercent);
+
+              return Stack(
+                children: <Widget>[
+                  Positioned(
+                    left: 30.0,
+                    top: sliderY - 50.0,
+                    child: FractionalTranslation(
+                      translation: Offset(0.0, -1.0),
+                      child: Text(
+                        'Testing',
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    left: 30.0,
+                    top: sliderY + 50.0,
+                    child: Text(
+                      'Testing',
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
       ],
     );
   }
